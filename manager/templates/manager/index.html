@@ -1,0 +1,212 @@
+{% extends "manager_base.html" %}
+{% block title %}Index{% endblock %}
+{% block content %}
+{% load static %}
+    <!-- Breadcrumb Section Begin -->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center" style="background-color:	#f7fddb;">
+                    <img src="{% static 'home_theme/images/Welcome.jpg' %}">
+                </div>
+            </div>
+        </div>
+    <!-- Breadcrumb Section End -->
+<!-- Product Section Begin -->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="filter__found">
+                                    <h6> Hello, welcome to our app {{ user }}!</h6>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+<!-- profile card css -->
+<style>
+	img {
+	    -ms-interpolation-mode: bicubic;
+	    vertical-align: middle;
+	    border: 0;
+	}
+
+	.profile-card{
+		width: 100%;
+		border-radius: 2px;
+		overflow: hidden;
+		margin: auto;
+		background: rgba(255,255,255,1);
+	}
+
+	.profile-card header{
+		display: block;
+		position: relative;
+		background: rgba(255,255,255,1);
+		text-align: center;
+		padding: 30px 0 20px;
+		overflow: hidden;
+	}
+
+	.profile-card header:before{
+		content: "";
+		background-size: cover;
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		z-index: -1;
+
+	}
+
+	.profile-card header:after{
+		content: "";
+		bottom: -1px;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+		background-image: linear-gradient(
+		    to bottom,
+		    rgba(255, 255, 255, 0) 0%,
+		    rgba(255, 255, 255, 1) 100%
+		);
+	}
+
+	.profile-card header img{
+		border-radius: 100%;
+		overflow: hidden;
+		width: 150px;
+		height: 150px;
+		/*border: 1px solid rgba(255,255,255,.5);*/
+		box-shadow: 0 1px 0 rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.1);
+	}
+
+	.profile-card header h1{
+		font-weight: 200;
+		font-size: 24px;
+		color: #444;
+		margin: 0;
+		padding: 0;
+		margin-top: 5px;
+	}
+
+	.profile-card header h2{
+		font-weight: 400;
+		font-size: 14px;
+		color: #666;
+		margin: 0;
+		padding: 0;
+	}
+
+	.profile-card .profile-bio{
+		padding: 0 30px;
+		text-align: center;
+		color: #888;
+	}
+
+	.profile-card .profile-social-links{
+		display: table;
+		width: 70%;
+		margin: 20px auto;
+	}
+
+	.profile-card .profile-social-links li{
+		display: table-cell;
+		width: 33.3333333333333333%
+	}
+
+	.profile-card .profile-social-links li a{
+		display: block;
+		text-align: center;
+		padding: 10px;
+		margin: 0 10px;
+		border-radius: 100%;
+		-webkit-transition: box-shadow 0.2s;
+		-moz-transition: box-shadow 0.2s;
+		-o-transition: box-shadow 0.2s;
+		transition: box-shadow 0.2s;
+	}
+	.profile-card .profile-social-links li a:hover{
+		box-shadow: 0 1px 1.5px 0 rgba(0,0,0,.12),0 1px 1px 0 rgba(0,0,0,.24);
+	}
+
+	.profile-card .profile-social-links li a:active{
+		box-shadow: 0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2);
+	}
+
+	.profile-card .profile-social-links li a img{
+		width: 100%;
+		display: block;
+	}
+</style>
+<div class="container">
+<div class="row">
+<div class="col-md-4 offset-md-4 mt-3 text-center">
+<aside class="profile-card">
+  <header>
+    <!-- here’s the avatar -->
+    <img src="../../{{profile.profile_image}}">
+    <!-- the username -->
+    <h1>{{profile.name}} {{profile.surname}}</h1>
+    <!-- and role or location -->
+    <h2>{{user.username}}</h2>
+  <!-- bit of a bio; who are you? -->
+  <div class="profile-bio">
+    <p>{{profile.biography}}</p>
+  </div>
+  <div class="credit_stars">
+    <style>
+        .fa-star{
+            color: #a6a6a6;
+        }
+        .checked{
+            color: #c9e265;
+        }
+    </style>
+
+    <h2>Credits <strong>{{balance.balance}}</strong></h2>
+    <span class="fa fa-star"></span>
+    <span class="fa fa-star"></span>
+    <span class="fa fa-star"></span>
+    <span class="fa fa-star"></span>
+    <span class="fa fa-star"></span>
+    <span class="fa fa-star"></span>
+    <span class="fa fa-star"></span>
+    <span class="fa fa-star"></span>
+    <span class="fa fa-star"></span>
+    <span class="fa fa-star"></span>
+  </div>
+  </header>
+
+</aside>
+    <p>
+    <a href="{% url 'market:index' %}" class="btn btn-block" style="background-color: #c9e265; margin:1px;">Market</a>
+    <a href="{% url 'analytics:index' %}" class="btn btn-block" style="background-color: #c9e265; margin:1px;">Analytics</a>
+    <a href="{% url 'community:index' %}" class="btn btn-block" style="background-color: #c9e265; margin:1px;">Community</a>
+    </p>
+    <p><a href="{% url 'user:logout' %}" class="block text-center">Logout</a></p>
+</div>
+</div>
+</div>
+<!-- that’s all folks! -->
+<script>
+    document.onload = stelline({{stars}});
+
+    function stelline(stars){
+        stars =  Math.round(stars*2);
+        icons= document.getElementsByClassName("fa fa-star");
+        console.log(icons);
+        for (var i=0; i<stars; i++){
+            icons[i].className += " checked";
+            console.log(icons[i]);
+        }
+        icons2= document.getElementsByClassName("fa fa-star");
+        console.log(icons2);
+    }
+</script>
+{% endblock %}
+

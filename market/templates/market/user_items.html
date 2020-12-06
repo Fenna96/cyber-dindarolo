@@ -1,0 +1,74 @@
+{% extends "market_base.html" %}
+{% block title %}Your items to be sold{% endblock %}
+{% block user_items %}
+<div id="content">
+<style>
+    h2{
+  text-align: center;
+  margin:16px;
+}
+</style>
+
+<div class="container">
+  <h2>Your products</h2>
+</div>
+    <!-- Product Section Begin -->
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="filter__found">
+                                    {% if not catalog %}
+                                    <h6>No product found..</h6>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        <div class="row">
+                            {% for item in catalog %}
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <form action="{% url 'market:remove_item' %}" method="post">
+                                    {% csrf_token %}
+                                        <div class="product__item">
+                                            <ul class="product__item__pic__hover">
+                                                    <li><button type="submit"><p><i class="fa fa-remove"></i></p></button></li>
+                                            </ul>
+                                            <div class="product__item__text">
+                                                <h6>{{ item.product.name }}</h6>
+                                                <h5>${{item.price}}</h5>
+                                                <h6>{{ item.date }}</h6>
+                                                <h6>Quantity: {{item.quantity}}</h6>
+                                            </div>
+                                        </div>
+                                    <input type="hidden" name="item_id" value={{item.id}}>
+                                </form>
+                            </div>
+                            {% endfor %}
+                  </div>
+        </div>
+    </section>
+    <!-- Product Section End -->
+</div>
+{% endblock %}
+{% block more_jquery %}
+        var sections = document.getElementsByTagName("section");
+        console.log(sections);
+        for (var i = 0; i < sections.length; i++) {
+            if(sections[i].id == 'user_items');
+            else sections[i].style.display = 'none';
+        }
+        document.getElementById("back").style.display = 'block';
+        document.getElementById("user_items").style.display = 'block';
+{% endblock %}
+
+{% block more_js %}
+        {% if error %}
+        processAjaxData("{% url 'market:user_items' %}");
+        {% endif %}
+{% endblock %}

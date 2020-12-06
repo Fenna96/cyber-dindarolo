@@ -1,0 +1,96 @@
+{% extends "market_base.html" %}
+{% block head %}
+{% endblock %}
+{% block title %}Catalog{% endblock %}
+{% block catalog %}
+<div id="content">
+<style>
+    h2{
+  text-align: center;
+  margin:16px;
+}
+</style>
+
+<!-- Starting of ajax contact form -->
+<div class="container">
+  <h2>Consult the catalog</h2>
+</div>
+
+    <!-- Product Section Begin -->
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="filter__found">
+                                    <h6><span>{{product_number}} PRODUCTS FOR SALE</span></h6>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+                        {% for group in groups  %}
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="filter__found">
+                                    <h6><span>{{group.key}} ({{group.count}})</span> <i id="{{group.key}}_hide" class="fa fa-caret-square-o-up" onclick="collapse({{group.key}})" style="positio:relative;bottom:-50px;"></i></h6>
+                                </div>
+                                <div class="price_track">
+                                    <a href="{% url 'analytics:price_tracker' item=group.key %}" target="_blank">Price tracker</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="{{group.key}}">
+                        <!--{{group.key}} ({{group.count}})
+                            <li><a href="{% url 'analytics:price_tracker' item=group.key %}" target="_blank">Price tracker</a></li>-->
+                            {% for item in group.items %}
+                            {% if item.product.name == group.key %}
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <form action="{% url 'market:buy_item' %}" method="post">
+                                    {% csrf_token %}
+                                        <div class="product__item">
+                                            <ul class="product__item__pic__hover">
+                                                    <li><p><i class="fa fa-plus" onclick="increment('{{forloop.parentloop.counter}}_{{forloop.counter}}')"></i></p></li>
+                                                    <li><p><i class="fa fa-minus" onclick="decrement('{{forloop.parentloop.counter}}_{{forloop.counter}}')"></i></p></li>
+                                                    <li><button type="submit"><p><i class="fa fa-shopping-cart"></i></p></button></li>
+                                            </ul>
+                                            <div class="product__item__text">
+                                                <h6>{{ item.product.name }}</h6>
+                                                <h5>${{item.price}}</h5>
+                                                <h6>{{ item.date }}</h6>
+                                                <h6>Quantity <input type="text" id="{{forloop.parentloop.counter}}_{{forloop.counter}}" name="quantity" value=1 style="background: transparent;
+    border: none; width:16px;" readonly> [max {{item.quantity}}]</h6>
+                                                <h6>Sold by <a href="{% url 'community:community_profile' username=item.user%}" target="_blank">{{ item.user }}</a> </h6>
+                                            </div>
+                                        </div>
+                                    <input type="hidden" name="item_id" value={{item.id}}>
+                                    <!-- necessario se si vuole usare i bottono + e - -->
+                                    <input type="hidden" id="max_quantity{{forloop.parentloop.counter}}_{{forloop.counter}}" name="max_quantity" value={{item.quantity}}>
+                                </form>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                  </div>
+                 {% endfor %}
+        </div>
+
+    <!-- Product Section End -->
+</div>
+</div>
+{% endblock %}
+{% block more_jquery %}
+        var sections = document.getElementsByTagName("section");
+        console.log(sections);
+        for (var i = 0; i < sections.length; i++) {
+            if(sections[i].id == 'catalog');
+            else sections[i].style.display = 'none';
+        }
+        document.getElementById("back").style.display = 'block';
+        document.getElementById("catalog").style.display = 'block';
+{% endblock %}
+{% block more_js %}
+        {% if error %}
+        processAjaxData("{% url 'market:catalog' %}");
+        {% endif %}
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "main_site.html" %}
+{% comment %}
+ Base template for market app
+{% endcomment %}
+{% block market_active %}class="active"{% endblock %}
+{% block error %}
+{% if error %}
+<p id="my_error" class="error_string">{{error}}</p>
+{% endif %}
+{% endblock %}
+{% block content %}
+<!-- go back button -->
+<div class="container">
+<div class="row">
+    <div class="col-md-4 offset-md-4 mt-3 text-center" style="display:none;" id="back">
+         <input type="button" id="back-button" class="btn btn-block" style="background-color: #c9e265; margin:1px;" value="<< Back to index" onclick='explore_button("index",false,"{% url "market:index" %}")'></input>
+    </div>
+</div>
+</div>
+{% load static %}
+<script type="text/javascript" src="{% static 'shop_theme/js/catalog.js' %}"></script>
+<!-- sections -->
+<section id="index">{% block index %}{% endblock %}</section>
+<section id="insert">{% block insert %}{% endblock %}</section>
+<section id="catalog">{% block catalog %}{% endblock %}</section>
+<section id="user_items">{% block user_items %}{% endblock %}</section>
+<section id="success">{% block success %}{% endblock %}</section>
+
+{% endblock %}
+{% block my_jquery %}
+<script>
+$( document ).ready(function() {
+        {% block loaders %}
+        {% endblock %}
+
+        {% block more_jquery %}
+        {% endblock %}
+});
+        function processAjaxData(urlPath){
+            window.history.pushState({"html":document.documentElement.innerHTML,"pageTitle":document.title},"", urlPath);
+        }
+        function explore_button(section,boolean,url) {
+            //take all sections
+            var sections = $('section')
+            //iterate over the sections to set everything aside section to none
+            for (var i = 0; i < sections.length; i++) {
+                if(sections[i].id == section)
+                {
+                    //if we have not the document loaded, load it
+                    if(sections[i].innerHTML == ''){
+                        //specific case for pages with js
+                        if(section != 'profile' && section != 'modify') $( "#"+section+"" ).load(url+" #content" );
+                        else loadContent(section,url,'#content');
+                    }
+                }
+                else $(sections[i]).fadeOut(300);
+            }
+            {% if error %}
+            //delete eventual errors from the screen
+            $("#my_error").text('');
+            {% endif %}
+            //if it's the case, set back visible, else not
+            if (boolean) $("#back").delay(295).fadeIn(300);
+            else $("#back").fadeOut(300);
+            //set the current section visible
+            $("#"+section).delay(295).fadeIn(300);
+            //update url
+            processAjaxData(url);
+        }
+
+        // SPECIAL BUTTON
+        function back_success_button(section,boolean,url) {
+             //take all sections
+            var sections = document.getElementsByTagName("section");
+            console.log(sections);
+            //iterate over the sections to set everything aside section to none
+            for (var i = 0; i < sections.length; i++) {
+                if(sections[i].id == section);
+                else $(sections[i]).fadeOut(300);
+            }
+            {% if error %}
+            //delete eventual errors from the screen
+            document.getElementById("my_error").innerHTML = '';
+            {% endif %}
+            //in this particular botton you have to set also success to none
+            $("success").fadeOut(300);
+            $("success_button").fadeOut(300);
+
+            //if it's the case, set back visible, else not
+            if (boolean) $("#back").delay(295).fadeIn(300);
+            else $("#back").fadeOut(300);
+            $("#"+section).delay(295).fadeIn(300);
+            //update url
+            processAjaxData(url);
+        }
+        {% block more_js %}{% endblock %}
+</script>
+{% endblock %}

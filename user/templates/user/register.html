@@ -1,0 +1,103 @@
+{% extends "user_base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+{% load static %}
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<form class="login100-form validate-form" enctype="multipart/form-data" action="{% url 'user:complete' %}" method="post">
+                    {% csrf_token %}
+					<span class="login100-form-title p-b-43">
+						Complete registration:
+					</span>
+
+                    {% if error %}
+                        <font color="red">{{error}}</font>
+                    {% endif %}
+                    {% for field in form  %}
+                    {% for error in field.errors %}
+                    <font color="red">{{error}}</font><br>
+                    {% endfor %}
+                    {% if field.name|stringformat:"s" == "password" %}
+					<div class="wrap-input100">
+						<input class="input100" required="true" type="password" name="{{ field.name }}">
+						<span class="focus-input100"></span>
+						<span class="label-input100">{{ field.label_tag }}</span>
+					</div>
+                    {% elif field.name|stringformat:"s" == "profile_image" %}
+                    <br>
+                    <div class="input-group">
+                        <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" onchange="text()" accept="image/*" name="{{ field.name }}" >
+                            <label class="custom-file-label" for="inputGroupFile01">Select profile image</label>
+							<script type="application/javascript">
+							function text(){
+  									var to_change = document.getElementById("label-immagine");
+  									var input = document.getElementById("inputGroupFile01").value;
+  									if (input.split("\\").pop()) to_change.value = input.split("\\").pop();
+  									else to_change.value = "No image uploaded";
+							};
+							</script>
+                        </div>
+                    </div>
+					<br>
+					<input id="label-immagine" type="text" class="form-control" readonly="" value="No image">
+                    <br>
+					{% elif field.name|stringformat:"s" == "email" %}
+					<div class="wrap-input100">
+						<input class="input100" type="email" required="true" name="{{ field.name }}">
+						<span class="focus-input100"></span>
+						<span class="label-input100">{{ field.label_tag }}</span>
+					</div>
+					{% elif field.name|stringformat:"s" == "username" %}
+					<div class="wrap-input100">
+						<input class="input100" type="text" required="true" name="{{ field.name }}" maxlength="10">
+						<span class="focus-input100"></span>
+						<span class="label-input100">{{ field.label_tag }}</span>
+					</div>
+					{% elif field.name|stringformat:"s" == "name"%}
+					<div class="wrap-input100">
+						<input class="input100" type="text" required="true" pattern="[a-zA-Z]+" title="Only alphabet chars allowed" name="{{ field.name }}" maxlength="20">
+						<span class="focus-input100"></span>
+						<span class="label-input100">{{ field.label_tag }}</span>
+					</div>
+					{% elif field.name|stringformat:"s" == "surname"%}
+					<div class="wrap-input100">
+						<input class="input100" type="text" required="true" pattern="[a-zA-Z]+" title="Only alphabet chars allowed" name="{{ field.name }}" maxlength="20">
+						<span class="focus-input100"></span>
+						<span class="label-input100">{{ field.label_tag }}</span>
+					</div>
+					{% elif field.name|stringformat:"s" == "mobile"%}
+					<div class="wrap-input100">
+						<input class="input100" type="tel" required="true" name="{{ field.name }}" pattern="([1-9]{1}[0-9]{9})|([1-9]{1}[0-9]{8})" maxlength="10" minlength="9"  title="Mobile phone must have 9-10 digits">
+						<span class="focus-input100"></span>
+						<span class="label-input100">{{ field.label_tag }}</span>
+					</div>
+                    {% else %}
+					<div class="wrap-input100">
+						<input class="input100" type="text" required="true" name="{{ field.name }}">
+						<span class="focus-input100"></span>
+						<span class="label-input100">{{ field.label_tag }}</span>
+					</div>
+                    {% endif %}
+                    {% endfor %}
+
+					<div class="container-login100-form-btn">
+						<button type="submit" class="login100-form-btn" style="background-color:#c9e265;">
+							Register
+						</button>
+					</div>
+
+					<div class="text-center p-t-46 p-b-20">
+						<span class="txt2">
+                            or <a href="{% url 'user:login' %}"> Sign in!</a>
+						</span>
+					</div>
+				</form>
+
+				<div class="login100-more" style="background-image: url({% static 'login_theme/images/b-02.jpg' %}); ">
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

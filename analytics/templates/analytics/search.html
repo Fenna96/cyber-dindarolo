@@ -1,0 +1,37 @@
+{% extends "analytics_base.html" %}
+{% block title %}Search{% endblock %}
+{% block search %}
+<div id="content">
+<div class="col-lg-12 text-center mt-5">
+  <h3>Search product</h3>
+</div>
+<div class="col-md-4 offset-md-4 mt-3">
+    <form action="{% url 'analytics:search_product' %}" method="post">
+         {% csrf_token %}
+<div class="input-group mb-3">
+  <input type="text" required="true" class="form-control" placeholder="Enter a valid product name.." aria-label="Recipient's username" name="item">
+  <div class="input-group-append">
+      <button type="submit" class="bg-transparent" style="border:transparent;">
+    <span class="input-group-text"><i class="fa fa-search"></i></span>
+      </button>
+  </div>
+  </div>
+ </form>
+</div>
+</div>
+{% endblock %}
+{% block more_jquery %}
+        var sections = document.getElementsByTagName("section");
+        console.log(sections);
+        for (var i = 0; i < sections.length; i++) {
+            if(sections[i].id == 'search');
+            else sections[i].style.display = 'none';
+        }
+        document.getElementById("back").style.display = 'block';
+        document.getElementById("search").style.display = 'block';
+{% endblock %}
+{% block more_js %}
+        {% if error %}
+        processAjaxData("{% url 'analytics:search' %}");
+        {% endif %}
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "analytics_base.html" %}
+{% block title %}Index{% endblock %}
+{% block index %}
+<div id="content">
+{% load static %}
+<!-- Breadcrumb Section Begin -->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center" style="background-color:	#f7fddb;">
+                    <img src="{% static 'history_theme/images/History.jpg' %}">
+                </div>
+            </div>
+        </div>
+    <!-- Breadcrumb Section End -->
+<!-- Product Section Begin -->
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="filter__item">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="filter__found">
+                                    <h6> Hello {{ user }}, here you can analyze your business</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4 mt-3 text-center">
+            <p>
+            <input type="button" id="history-button" class="btn btn-block" style="background-color: #c9e265; margin:1px;" value="Your History" onclick='explore_button("history",true,"{% url "analytics:history" %}")'></input>
+            <input type="button" id="search-button" class="btn btn-block" style="background-color: #c9e265; margin:1px;" value="Price tracker" onclick='explore_button("search",true,"{% url "analytics:search" %}")'></input>
+            </p>
+        </div>
+    </div>
+</div>
+<br>
+</div>
+{% endblock %}
+{% block more_jquery %}
+        var sections = document.getElementsByTagName("section");
+        for (var i = 0; i < sections.length; i++) {
+            if(sections[i].id == 'index');
+            else sections[i].style.display = 'none';
+        }
+        document.getElementById("back").style.display = 'none';
+        document.getElementById("index").style.display = 'block';
+{% endblock %}

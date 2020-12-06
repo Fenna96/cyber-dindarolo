@@ -1,0 +1,80 @@
+{% extends "market_base.html" %}
+{% block title %}Success{% endblock %}
+{% block success %}
+{% load static %}
+<script type="text/javascript" src="{% static 'shop_theme/js/catalog.js' %}"></script>
+
+<div id="index">
+</div>
+<div id="insert">
+
+</div>
+<div id="catalog">
+
+</div>
+<div id="user_items">
+
+</div>
+<div id="success">
+    <!-- Breadcrumb Section End -->
+<!-- Product Section Begin -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 offset-md-4 mt-3 text-center">
+                                <div class="filter__found">
+                                    <h6 style="margin-bottom:20px;"> <span>{{ user }}, your transaction was successful!</span></h6>
+                                </div>
+                </div>
+            </div>
+        </div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4 mt-3 text-center">
+            <table class="table table-sm table-hover table-striped">
+                <tbody>
+                    <tr>
+                        <td>
+                            <strong><b>Product</b>: </strong> {{product}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong><b>Quantity</b>: </strong> {{quantity}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong><b><b>Price</b>: </b></strong> {{price}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong><b><b>Total</b>: </b></strong> {{amount}} credits.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+             <input type="button" id="success_button" class="btn btn-block" style="background-color: #c9e265; margin:1px;" value="<< Back to catalog" onclick='back_success_button("catalog",true,"{% url "market:catalog" %}")'></input>
+    </div>
+</div>
+        </div>
+    </div>
+</div>
+<br>
+</div>
+{% endblock %}
+{% block loaders %}
+    $( "#catalog" ).load("{% url 'market:catalog' %} #content" );
+{% endblock %}
+{% block more_jquery %}
+        var sections = document.getElementsByTagName("section");
+        console.log(sections);
+        for (var i = 0; i < sections.length; i++) {
+            if(sections[i].id == 'success');
+            else sections[i].style.display = 'none';
+        }
+        document.getElementById("back").style.display = 'none';
+        document.getElementById("success").style.display = 'block';
+{% endblock %}

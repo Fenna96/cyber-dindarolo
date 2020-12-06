@@ -1,0 +1,51 @@
+{% extends "user_base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+{% load static %}
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<form class="login100-form validate-form" action="{% url 'user:enter' %}" method="post">
+                    {% csrf_token %}
+					<span class="login100-form-title p-b-43">
+						Login to continue
+					</span>
+
+					{% if error  %}
+						<font color="red">{{error}}</font><br><br>
+					{% endif %}
+                    {% for field in form  %}
+					{% if field.name|stringformat:"s" == "password" %}
+					<div class="wrap-input100">
+						<input class="input100" type="password" required="true" name="{{ field.name }}">
+						<span class="focus-input100"></span>
+						<span class="label-input100">{{ field.label_tag }}</span>
+					</div>
+					{% else %}
+					<div class="wrap-input100">
+						<input class="input100" type="text" required="true" name="{{ field.name }}">
+						<span class="focus-input100"></span>
+						<span class="label-input100">{{ field.label_tag }}</span>
+					</div>
+					{% endif %}
+                    {% endfor %}
+
+					<div class="container-login100-form-btn">
+						<button type="submit" class="login100-form-btn" style="background-color:#c9e265;">
+							Login
+						</button>
+					</div>
+
+					<div class="text-center p-t-46 p-b-20">
+						<span class="txt2">
+                            or <a href="{% url 'user:registration' %}"> Sign up!</a>
+						</span>
+					</div>
+				</form>
+
+				<div class="login100-more" style="background-image: url({% static 'login_theme/images/b-02.jpg' %}); ">
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

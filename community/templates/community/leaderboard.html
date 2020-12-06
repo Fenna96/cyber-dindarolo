@@ -1,0 +1,124 @@
+{% extends "community_base.html" %}
+{% block title %}Index{% endblock %}
+{% block leaderboard %}
+<div id="content">
+{% load static %}
+<!-- Leaderboard style -->
+<style>
+h2{
+  text-align: center;
+  margin:16px;
+}
+
+.avatar {
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 1em;
+}
+
+.table{
+  margin-top: 20px;
+}
+
+.table thead{
+  background:#111;
+  color:#fff;
+}
+
+.table tr th,.table tr td:nth-child(odd){
+text-align:center;
+}
+</style>
+
+<!-- Product Section Begin -->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                      <h2>TOP 10</h2>
+                      <table id="top10" class="table striped text-center">
+                         <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Username</th>
+                                <th>Credits</th>
+                                <th>Stars</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                         {% for item in top10 %}
+                             <tr>
+                                 <td>{{forloop.counter}}</td>
+                                 <td><a href="{% url 'community:community_profile' username=item.user%}" target="_blank">{{ item.user }}</a></td>
+                                 <td>{{item.balance}}</td>
+                                 <td>{{item.stars}}</td>
+                             </tr>
+                         {% endfor %}
+                         </tbody>
+                      </table>
+                </div>
+                <div class="col-lg-6">
+                         <h2>WORSE 10</h2>
+                         <table id="worse10" class="table striped text-center">
+                         <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Username</th>
+                                <th>Credits</th>
+                                <th>Stars</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                         {% for item in worse10 %}
+                             <tr>
+                                 <td>{{forloop.counter}}</td>
+                                 <td><a href="{% url 'community:community_profile' username=item.user%}" target="_blank">{{ item.user }}</a></td>
+                                 <td>{{item.balance}}</td>
+                                 <td>{{item.stars}}</td>
+                             </tr>
+                         {% endfor %}
+                         </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row"  height="100px">
+                <div class="col-lg-12">
+                    <h2>Leaderboard</h2>
+                      <table id="fullboard" class="table striped text-center">
+                         <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Username</th>
+                                <th>Credits</th>
+                                <th>Stars</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                         {% for item in leaderboard %}
+                             <tr>
+                                 <td>{{forloop.counter}}</td>
+                                 <td><a href="{% url 'community:community_profile' username=item.user%}" target="_blank">{{ item.user }}</a></td>
+                                 <td>{{item.balance}}</td>
+                                 <td>{{item.stars}}</td>
+                             </tr>
+                         {% endfor %}
+                         </tbody>
+                      </table>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}
+{% block more_jquery %}
+        var sections = document.getElementsByTagName("section");
+        console.log(sections);
+        for (var i = 0; i < sections.length; i++) {
+            if(sections[i].id == 'leaderboard');
+            else sections[i].style.display = 'none';
+        }
+        document.getElementById("back").style.display = 'block';
+        document.getElementById("leaderboard").style.display = 'block';
+{% endblock %}

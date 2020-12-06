@@ -1,0 +1,56 @@
+{% extends "community_base.html" %}
+{% block title %}Index{% endblock %}
+{% block index %}
+<div id="content">
+{% load static %}
+    <!-- Breadcrumb Section Begin -->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center" style="background-color:	#f7fddb;">
+                    <img src="{% static 'community_theme/images/comm.jpg' %}">
+                </div>
+            </div>
+        </div>
+    <!-- Breadcrumb Section End -->
+<!-- Product Section Begin -->
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="filter__item">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="filter__found">
+                                    <h6> Visit our community {{ user }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4 mt-3 text-center">
+            <p>
+            <input type="button" id="leaderboard-button" class="btn btn-block" style="background-color: #c9e265; margin:1px;" value="Leaderboard" onclick='explore_button("leaderboard",true,"{% url "community:leaderboard" %}")'></input>
+            <input type="button" id="search-button" class="btn btn-block" style="background-color: #c9e265; margin:1px;" value="Search User" onclick='explore_button("search",true,"{% url "community:search" %}")'></input>
+            <input type="button" id="profile-button" class="btn btn-block" style="background-color: #c9e265; margin:1px;" value="My profile" onclick='explore_button("profile",true,"{% url "community:community_profile" username=user %}")'></input>
+            </p>
+        </div>
+    </div>
+</div>
+<br>
+</div>
+{% endblock %}
+{% block more_jquery %}
+        var sections = document.getElementsByTagName("section");
+        console.log(sections);
+        for (var i = 0; i < sections.length; i++) {
+            if(sections[i].id == 'index');
+            else sections[i].style.display = 'none';
+        }
+        document.getElementById("back").style.display = 'none';
+        document.getElementById("index").style.display = 'block';
+{% endblock %}

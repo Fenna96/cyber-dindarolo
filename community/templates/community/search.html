@@ -1,0 +1,36 @@
+{% extends "community_base.html" %}
+{% block title %}Search{% endblock %}
+{% block search %}
+<div id="content">
+<div class="col-lg-12 text-center mt-5">
+  <h3>Search user</h3>
+</div>
+<div class="col-md-4 offset-md-4 mt-3">
+    <form action="{% url 'community:search_user' %}" method="post">
+         {% csrf_token %}
+<div class="input-group mb-3">
+  <input type="text" required="true" class="form-control" placeholder="Enter a valid username.." aria-label="Recipient's username" name="username">
+  <div class="input-group-append">
+      <button type="submit" class="bg-transparent" style="border:transparent;">
+    <span class="input-group-text"><i class="fa fa-search"></i></span>
+      </button>
+  </div>
+  </div>
+ </form>
+</div>
+<br>
+</div>
+{% endblock %}
+{% block more_jquery %}
+        document.getElementById("index").style.display = 'none';
+        document.getElementById("search").style.display = 'block';
+        document.getElementById("leaderboard").style.display = 'none';
+        document.getElementById("back").style.display = 'block';
+        document.getElementById("profile").style.display = 'none';
+        document.getElementById("modify").style.display = 'none';
+{% endblock %}
+{% block more_js %}
+        {% if error %}
+        processAjaxData("{% url 'community:search' %}");
+        {% endif %}
+{% endblock %}

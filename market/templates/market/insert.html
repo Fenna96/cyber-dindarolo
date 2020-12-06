@@ -1,0 +1,57 @@
+    <!-- Element of the ajax contact form -->{% extends "market_base.html" %}
+{% block title %}Insert{% endblock %}
+{% block insert %}
+<div id="content">
+<style>
+    h2{
+  text-align: center;
+  margin:16px;
+}
+</style>
+
+<!-- Starting of ajax contact form -->
+<div class="container">
+  <h2>Insert your product</h2>
+</div>
+<div class="container">
+<form class="contact__form container" method="post" action="{% url 'market:add_item' %}">
+    {% csrf_token %}
+
+    <!-- Element of the ajax contact form -->
+    <div class="row">
+        {% for field in product_form  %}
+            {% for error in field.errors %}
+                    <p class="error_string">{{error}}</p>
+            {% endfor %}
+            <div class="col-md-6 form-group">
+                {{field.label_tag}}
+                {{field}}
+            </div>
+        {% endfor %}
+        {% for field in catalog_form  %}
+            {% for error in field.errors %}
+                    <p class="error_string">{{error}}</p>
+            {% endfor %}
+            <div class="col-md-6 form-group">
+                 {{field.label_tag}}
+                 {{field}}
+            </div>
+        {% endfor %}
+        <div class="col-12">
+            <input name="submit" type="submit" class="form-control" value="Insert" style="background-color: #c9e265; margin-top:10px; margin-bottom:30px;">
+        </div>
+    </div>
+</form>
+</div>
+</div>
+{% endblock %}
+{% block more_jquery %}
+        var sections = document.getElementsByTagName("section");
+        console.log(sections);
+        for (var i = 0; i < sections.length; i++) {
+            if(sections[i].id == 'insert');
+            else sections[i].style.display = 'none';
+        }
+        document.getElementById("back").style.display = 'block';
+        document.getElementById("insert").style.display = 'block';
+{% endblock %}

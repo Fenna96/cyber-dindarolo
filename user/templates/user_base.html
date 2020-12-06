@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% comment %}
+ Base template for user app
+{% endcomment %}
+
+<!-- Template CSS code -->
+{% block theme_css %}
+{% load static %}
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="{% static 'login_theme/images/icons/favicon.ico' %}"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'login_theme/vendor/bootstrap/css/bootstrap.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'login_theme/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'login_theme/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'login_theme/vendor/animate/animate.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'login_theme/vendor/css-hamburgers/hamburgers.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'login_theme/vendor/animsition/css/animsition.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'login_theme/vendor/select2/select2.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'login_theme/vendor/daterangepicker/daterangepicker.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'login_theme/css/util.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'login_theme/css/main.css' %}">
+<!--===============================================================================================-->
+{% endblock %}
+
+<!-- Template JS code -->
+{% block theme_js %}
+<!--===============================================================================================-->
+	<script src="{% static 'login_theme/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'login_theme/vendor/animsition/js/animsition.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'login_theme/vendor/bootstrap/js/popper.js' %}"></script>
+	<script src="{% static 'login_theme/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'login_theme/vendor/select2/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'login_theme/vendor/daterangepicker/moment.min.js' %}"></script>
+	<script src="{% static 'login_theme/vendor/daterangepicker/daterangepicker.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'login_theme/vendor/countdowntime/countdowntime.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'login_theme/js/main.js' %}"></script>
+{% endblock %}

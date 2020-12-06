@@ -1,0 +1,159 @@
+{% extends "community_base.html" %}
+{% block title %}User page{% endblock %}
+{% block profile %}
+<div id="content">
+{% if user %}
+<style>
+.table tr th, .table tr td:nth-child(odd) {
+    text-align: left;
+}
+</style>
+<div class="container" style="margin-top:30px">
+    <div class="row my-2">
+        <div class="col-lg-9 order-2">
+                <div class="text-left" id="profile">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Biography</h6>
+                            <p>
+                                {{profile.biography}}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                                <style>
+                                    .fa-star{
+                                        color: #a6a6a6;
+                                    }
+                                    .checked{
+                                        color: #c9e265;
+                                    }
+                                </style>
+                            <h6>Credits <strong>{{profile_balance.balance}}</strong></h6>
+                            <div id="stelline_profile">
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <h5 class="mt-2"><span class="fa fa-info-circle float-right"></span>Info</h5>
+                            <table class="table table-sm table-hover table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <strong>username:</strong> {{user.username}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>name:</strong> {{profile.name}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>surname:</strong> {{profile.surname}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-12">
+                            <h5 class="mt-2"><span class="fa fa-id-card float-right"></span>Contacts</h5>
+                            <table class="table table-sm table-hover table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <strong>phone:</strong> +39 {{profile.mobile}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>email:</strong> {{user.email}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            {% if yourself %}
+                            <input type="button" id="modify-button" class="btn btn-block" style="background-color: #c9e265; margin:1px;" value="Modify" onclick="modify_button()"></input>
+                            {% else %}
+                            <a href="mailto:{{user.email}}" target="_blank" class="btn btn-block" style="background-color: #c9e265; margin-top:20px; margin-bottom:20px;" >Send email</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!--/row-->
+                </div>
+        </div>
+        <div class="col-lg-3 text-center align-items-center">
+            <h4 class="mb-3 text-center">{{profile.name}} {{profile.surname}}</h4>
+            <img src="../../{{profile.profile_image}}" class="mx-auto img-fluid img-circle d-block" alt="avatar" style="height:200px; margin-bottom:20px">
+        </div>
+    </div>
+</div>
+{% endif %}
+<script>
+        function stelline(stars){
+            stars =  Math.round(stars*2);
+            icons= document.getElementsByClassName("fa fa-star");
+            console.log(icons);
+            for (var i=0; i<stars; i++){
+                icons[i].className += " checked";
+                console.log(icons[i]);
+            }
+            icons2= document.getElementsByClassName("fa fa-star");
+            console.log(icons2);
+        }
+        function modify_button() {
+            var sections = document.getElementsByTagName("section");
+            console.log(sections);
+            for (var i = 0; i < sections.length; i++) {
+                if(sections[i].id == 'leaderboard');
+                else sections[i].style.display = 'none';
+            }
+            document.getElementById("back").style.display = 'none';
+            document.getElementById("modify").style.display = 'block';
+            document.getElementById("back-profile").style.display = 'block';
+            {% if error %}
+            document.getElementById("my_error").innerHTML = '';
+            {% endif %}
+            processAjaxData("{% url 'community:modify' %}");
+        }
+        function back_profile_button() {
+            var sections = document.getElementsByTagName("section");
+            console.log(sections);
+            for (var i = 0; i < sections.length; i++) {
+                if(sections[i].id == 'leaderboard');
+                else sections[i].style.display = 'none';
+            }
+            document.getElementById("back-profile").style.display = 'none';
+            document.getElementById("back").style.display = 'block';
+            document.getElementById("profile").style.display = 'block';
+            {% if error %}
+            document.getElementById("my_error").innerHTML = '';
+            {% endif %}
+            processAjaxData("{% url 'community:community_profile' username=user %}");
+        }
+        //execute function
+        stelline({{profile_balance.user_stars}})
+</script>
+</div>
+{% endblock %}
+{% block loaders %}
+    loadContent('#modify','{% url 'community:modify' %}','#content');
+{% endblock %}
+{% block more_jquery %}
+        var sections = document.getElementsByTagName("section");
+        console.log(sections);
+        for (var i = 0; i < sections.length; i++) {
+            if(sections[i].id == 'profile');
+            else sections[i].style.display = 'none';
+        }
+        document.getElementById("back").style.display = 'block';
+        document.getElementById("profile").style.display = 'block';
+{% endblock %}

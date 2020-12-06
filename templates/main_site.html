@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% comment %}
+ Base template for market app
+{% endcomment %}
+
+<!-- Template CSS code -->
+{% block theme_css %}
+{% load static %}
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{% static 'shop_theme/css/bootstrap.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'shop_theme/css/font-awesome.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'shop_theme/css/elegant-icons.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'shop_theme/css/nice-select.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'shop_theme/css/jquery-ui.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'shop_theme/css/owl.carousel.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'shop_theme/css/slicknav.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'shop_theme/css/style.css' %}" type="text/css">
+
+{% endblock %}
+
+<!-- Navigation bar -->
+{% block body %}
+ <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+<!-- Humberger Begin -->
+    <div class="humberger__menu__overlay"></div>
+    <div class="humberger__menu__wrapper">
+        <div class="humberger__menu__logo">
+            <a href="#"><img src="" alt=""></a>
+        </div>
+        <div class="humberger__menu__cart">
+            <ul>
+                <li><i class="fa fa-shopping-bag"></i></li>
+            </ul>
+            <div class="header__cart__price">Credits: <span>{{balance.balance}}</span></div>
+            <div class="log_out_link"><a href="{% url 'user:logout' %}">Log out</a></div>
+        </div>
+        <nav class="humberger__menu__nav mobile-menu">
+                                    <ul>
+                            <li><a href="{% url 'manager:index' %}">Home</a></li>
+                            <li><a href="{% url 'market:index' %}">Market</a>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="{% url 'market:catalog' %}">Explore catalog</a></li>
+                                    <li><a href="{% url 'market:insert' %}">Insert new item</a></li>
+                                    <li><a href="{% url 'market:user_items' %}">Check your items</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{% url 'analytics:index' %}">Analytics</a>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="{% url 'analytics:history' %}">Your history</a></li>
+                                    <li><a href="{% url 'analytics:search' %}">Price tracker</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{% url 'community:index' %}">Community</a>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="{% url 'community:leaderboard' %}">Leaderboard</a></li>
+                                    <li><a href="{% url 'community:search' %}">Search user</a></li>
+                                    <li><a href="{% url 'community:community_profile' username=request.user %}">My profile</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+        </nav>
+        <div id="mobile-menu-wrap"></div>
+    </div>
+    <!-- Humberger End -->
+
+
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="header__logo">
+                        <img height=60px src="{% static 'shop_theme/img/my_logo.png' %}" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <nav class="header__menu">
+                        <ul>
+                            <li {% block manager_active %} {% endblock %}><a href="{% url 'manager:index' %}">Home</a></li>
+                            <li {% block market_active %} {% endblock %}><a href="{% url 'market:index' %}">Market</a>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="{% url 'market:catalog' %}">Explore catalog</a></li>
+                                    <li><a href="{% url 'market:insert' %}">Insert new item</a></li>
+                                    <li><a href="{% url 'market:user_items' %}">Check your items</a></li>
+                                </ul>
+                            </li>
+                            <li {% block analytics_active %} {% endblock %}><a href="{% url 'analytics:index' %}">Analytics</a>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="{% url 'analytics:history' %}">Your history</a></li>
+                                    <li><a href="{% url 'analytics:search' %}">Price tracker</a></li>
+                                </ul>
+                            </li>
+                            <li {% block community_active %} {% endblock %}><a href="{% url 'community:index' %}">Community</a>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="{% url 'community:leaderboard' %}">Leaderboard</a></li>
+                                    <li><a href="{% url 'community:search' %}">Search user</a></li>
+                                    <li><a href="{% url 'community:community_profile' username=request.user %}">My profile</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3">
+                    <div class="header__cart">
+                        <div class="header__cart__price">
+                            <i class="fa fa-shopping-bag"></i>
+                            Credits: <span>{{balance.balance}}</span></div>
+                        <div class="log_out_link"><a href="{% url 'user:logout' %}">Log out</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="humberger__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+{% endblock %}
+
+<!-- Template JS code -->
+{% block theme_js %}
+
+    <!-- Js Plugins -->
+    <script src="{% static 'shop_theme/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'shop_theme/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'shop_theme/js/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'shop_theme/js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'shop_theme/js/jquery.slicknav.js' %}"></script>
+    <script src="{% static 'shop_theme/js/mixitup.min.js' %}"></script>
+    <script src="{% static 'shop_theme/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'shop_theme/js/main.js' %}"></script>
+
+{% endblock %}
+
+{% block footer %}
+<!-- Footer Section Begin -->
+<br>
+    <footer class="footer spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__about__logo">
+                            <a href="./index.html"><img src="" alt=""></a>
+                        </div>
+                        <ul>
+                            <li>CyberDindarolo - TRUST&BUY</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+<!-- Footer Section End -->
+{% endblock %}

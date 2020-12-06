@@ -1,0 +1,81 @@
+{% extends "main_site.html" %}
+{% comment %}
+ Base template for community app
+{% endcomment %}
+{% block community_active %}class="active"{% endblock %}
+{% block error %}
+{% if error %}
+<p id="my_error" class="error_string">{{error}}</p>
+{% endif %}
+{% endblock %}
+{% block content %}
+<!-- go back button -->
+<div class="container">
+<div class="row">
+    <div class="col-md-4 offset-md-4 mt-3 text-center" style="display:none;" id="back">
+         <input type="button" id="back-button" class="btn btn-block" style="background-color: #c9e265; margin:1px;" value="<< Back to index" onclick='explore_button("index",false,"{% url "community:index" %}")'></input>
+    </div>
+</div>
+</div>
+<!-- sections -->
+<section id="index">{% block index %}{% endblock %}</section>
+<section id="leaderboard">{% block leaderboard %}{% endblock %}</section>
+<section id="profile">{% block profile %}{% endblock %}</section>
+<section id="modify">{% block modify %}{% endblock %}</section>
+<section id="search">{% block search %}{% endblock %}</section>
+{% endblock %}
+{% block my_jquery %}
+<script>
+$( document ).ready(function() {
+        {% block loaders %}
+        {% endblock %}
+        {% block more_jquery %}
+        {% endblock %}
+});
+        function processAjaxData(urlPath){
+            window.history.pushState({"html":document.documentElement.innerHTML,"pageTitle":document.title},"", urlPath);
+        }
+        function explore_button(section,boolean,url) {
+            //take all sections
+            var sections = $('section')
+            //iterate over the sections to set everything aside section to none
+            for (var i = 0; i < sections.length; i++) {
+                 if(sections[i].id == section)
+                {
+                    //if we have not the document loaded, load it (exception for profile, since he's loaded every time in index)
+                    if(sections[i].innerHTML == '' || sections[i].id == 'profile'){
+                        //specific case for pages with js
+                        if(section != 'profile' && section != 'modify') $( "#"+section+"" ).load(url+" #content" );
+                        else {
+                        //need to load both for profile/modify page
+                        loadContent('#profile','{% url 'community:community_profile' username=request.user %}','#content');
+                        loadContent('#modify','{% url 'community:modify' %}','#content');
+                        }
+                    }
+                }
+                else $(sections[i]).fadeOut(300);
+            }
+            {% if error %}
+            //delete eventual errors from the screen
+            $("#my_error").text('');
+            {% endif %}
+            //if it's the case, set back visible, else not
+            if (boolean) $("#back").delay(295).fadeIn(300);
+            else $("#back").fadeOut(300);
+            //set the current section visible
+            $("#"+section).delay(295).fadeIn(300)
+            //update url
+            processAjaxData(url);
+        }
+        //for loading pages with their js
+         function loadContent(target, url, selector) {
+                $.ajax({
+                    url: url,
+                    success: function(data,status,jqXHR) {
+                        $(target).html($(data).find(selector).addBack(selector).children());
+                    }
+                });
+        }
+        {% block more_js %}{% endblock %}
+</script>
+{% endblock %}

@@ -1,0 +1,161 @@
+{% extends "analytics_base.html" %}
+{% block title %}History{% endblock %}
+{% block history %}
+<div id="content">
+{% if not error %}
+<style>
+    h2{
+  text-align: center;
+  margin:16px;
+}
+
+h5{
+     text-align: center;
+  padding:20px;
+}
+
+.avatar {
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 1em;
+}
+
+.table{
+  margin-top: 20px;
+}
+
+.table thead{
+  background:#c9e265;
+  color:#737373;
+}
+
+.table tr th,.table tr td:nth-child(odd){
+text-align:center;
+}
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+             <h2>Analyze your past transactions</h2>
+             <h5>- Data by time -</h5>
+        </div>
+    </div>
+     <div class="row">
+    {% for option,groups in lineChart.items %}
+         <div class="col-lg-4">
+            <canvas id="lineChart{{option}}"></canvas>
+         </div>
+    {% endfor %}
+     </div>
+    <div class="col-lg-12">
+             <h5>- Data by categories -</h5>
+        </div>
+    <div class="row">
+         <div class="col-lg-6 text-center">
+             <h6> Last year </h6>
+         </div>
+        <div class="col-lg-6 text-center">
+             <h6> Last month </h6>
+        </div>
+    </div>
+     <div class="row">
+     {% for option,groups in pieChart.items %}
+         <div class="col-lg-6">
+            <canvas id="pieChart{{option}}"></canvas>
+         </div>
+    {% endfor %}
+     </div>
+    <div class="col-lg-12">
+             <h5>- Account balance -</h5>
+        </div>
+     <div class="row">
+                <div class="col-lg-12">
+                      <table id="history" class="table striped text-center">
+                         <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Value</th>
+                            </tr>
+                         </thead>
+                         <tbody>
+                         {% for item in history %}
+                             <tr>
+                                 <td>{{item.product.name}}</td>
+                                 <td>{{item.product.category}}</td>
+                                 <td>{{item.date.day}}/{{item.date.month}}/{{item.date.year}}</td>
+                                 <td>{{item.amount}}</td>
+                             </tr>
+                         {% endfor %}
+                         </tbody>
+                      </table>
+                </div>
+            </div>
+</div>
+<script>
+{% for option,groups in lineChart.items %}
+var ctxL = document.getElementById("lineChart{{option}}").getContext('2d');
+var myLineChart{{option}} = new Chart(ctxL, {
+type: 'bar',
+data: {
+labels: [
+ {% for group in groups %}"{{group.key}}",{% endfor %}
+],
+datasets: [{
+label: "{{option.capitalize}}",
+data: [
+ {% for group in groups %}{{group.sum}},{% endfor %}
+],
+backgroundColor: [
+ {% for group in groups %}
+'rgba(247, 253, 219, .7)',
+{% endfor %}
+],
+borderColor: [
+ {% for group in groups %}
+'rgba(201, 226, 101, .7)',
+ {% endfor %}
+],
+borderWidth: 2
+}
+]},
+options: {
+responsive: true
+}
+});
+{% endfor %}
+{% for option,groups in pieChart.items %}
+var ctxP = document.getElementById("pieChart{{option}}").getContext('2d');
+var myPieChart = new Chart(ctxP, {
+type: 'pie',
+data: {
+labels: ["Clothes","Cereals","Fruits&Veg", "Dairy", "Meat", "Fish", "Sweets&Snacks","Drinks", "Others",],
+datasets: [{
+data: [{% for key,value in groups.items %}"{{value}}",{% endfor %}],
+backgroundColor: ["#6d5b6f","#ddeac8", "#fe6b73", "#fbfb9b", "#ffc0cb", "#a4bdba", "#9d839f", "#ac5861", "#f6e9d6"  ],
+hoverBackgroundColor: ["#46403D", "#11875d", "#FF5A5E", "#FFC870", "#ac5861", "#616774", "#6D5B6F", "#530127", "#CC8E7F", ]
+}]
+},
+options: {
+responsive: true
+}
+});
+{% endfor %}
+</script>
+</div>
+{% endif %}
+{% endblock %}
+{% block more_jquery %}
+        var sections = document.getElementsByTagName("section");
+        console.log(sections);
+        for (var i = 0; i < sections.length; i++) {
+            if(sections[i].id == 'history');
+            else sections[i].style.display = 'none';
+        }
+        document.getElementById("back").style.display = 'block';
+        document.getElementById("history").style.display = 'block';
+{% endblock %}
