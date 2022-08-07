@@ -1,3 +1,4 @@
+from typing import Optional
 from manager.models import (
     Balance,
     CatalogItem,
@@ -50,6 +51,11 @@ class CatalogItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CatalogItem
         fields = "__all__"
+
+    def validate_user(self, value: int):
+        user: Optional[User] = User.objects.filter(id=value).first()
+        assert user is not None, f"Catalog item pointing to non-existant user {value}"
+        return user.username
 
 
 class PricetrackerSerializer(serializers.ModelSerializer):

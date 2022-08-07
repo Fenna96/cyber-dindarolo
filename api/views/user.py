@@ -1,3 +1,4 @@
+from typing import Callable
 from django.http import HttpRequest
 from common import utils
 from django.contrib.auth import authenticate, login, logout
@@ -24,6 +25,18 @@ from api.serializers.model_serializers import (
 )
 
 
+def registered(func: Callable):
+    def check(self: APIView, request: HttpRequest):
+        if request.user.is_authenticated:
+            return Response(
+                {"token": get_token(request)},
+                status=status.HTTP_302_FOUND,
+            )
+        return func(self, request)
+
+    return check
+
+
 class Login(APIView):
     """
     Defines a POST method that logs the user in.
@@ -35,13 +48,9 @@ class Login(APIView):
     If an user was already logged in before the request, nothing is done
     """
 
+    @registered
     def post(self, request: HttpRequest) -> Response:
         "Log the user in"
-        if request.user.is_authenticated:
-            return Response(
-                {"your_token": get_token(request)},
-                status=status.HTTP_302_FOUND,
-            )
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             username = serializer.data["username"]
@@ -138,14 +147,9 @@ class Registration(APIView):
         balance = Balance(user=user, balance=0)
         balance.save()
 
+    @registered
     def post(self, request: HttpRequest):
         "Register a new user"
-
-        if request.user.is_authenticated:
-            return Response(
-                {"your_token": get_token(request)},
-                status=status.HTTP_302_FOUND,
-            )
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
             username = serializer.data["username"]

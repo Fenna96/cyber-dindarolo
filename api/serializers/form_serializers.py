@@ -68,7 +68,7 @@ class InsertSerializer(serializers.ModelSerializer):
 
 class BuySerializer(serializers.Serializer):
     id = serializers.IntegerField(required=True)
-    quantity = serializers.IntegerField(required=True, default=1)
+    quantity = serializers.IntegerField(required=False, default=1)
 
 
 class RemoveSerializer(serializers.Serializer):

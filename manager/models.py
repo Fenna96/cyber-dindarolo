@@ -58,21 +58,16 @@ class Transaction(models.Model):
 
 
 class CatalogItem(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE
-    )  # each id correspond to a user in User table (can have multiple transaction for one user)
-    product = models.ForeignKey(
-        Product, to_field="name", on_delete=models.CASCADE
-    )  # at each transaction is assigned exactly one product (can have multiple transactions assigned to the same product)
-    quantity = models.IntegerField(
-        default=1
-    )  # you can assigne multiple products, one by deafult
-    date = models.DateTimeField(
-        auto_now_add=True, blank=True
-    )  # add date to track transactions in a specified interval
-    price = models.DecimalField(
-        max_digits=256, decimal_places=2
-    )  # add prize to track transactions, per analisi
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    "Each id corresponds to a user in User table (can have multiple transaction for one user)"
+    product = models.ForeignKey(Product, to_field="name", on_delete=models.CASCADE)
+    "At each transaction is assigned exactly one product (can have multiple transactions assigned to the same product)"
+    quantity = models.IntegerField(default=1)
+    "You can assigne multiple products, one by deafult"
+    date = models.DateTimeField(auto_now_add=True, blank=True)
+    "Add date to track transactions in a specified interval"
+    price = models.DecimalField(max_digits=256, decimal_places=2)
+    "Add prize to track transactions, per analisi"
 
     def __str__(self):
         return f' "{self.product.name}" | {self.date.strftime("%a, %d %b")} {self.user.username}: {self.quantity} , {self.price}'
